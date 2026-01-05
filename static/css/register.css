@@ -1,0 +1,89 @@
+.register-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(255, 152, 0, 0.1);
+}
+
+.register-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ff5722;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #666;
+}
+
+.form-input, .form-textarea {
+    padding: 12px 16px;
+    border: 2px solid #ffccbc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #ff9800;
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #ff9800;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+    color: #ff5722;
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #ff4444;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    animation: fadeIn 0.5s ease-in-out;
+}

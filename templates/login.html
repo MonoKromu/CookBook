@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<div class="login-container">
+    <h2 class="login-title">Вход в аккаунт</h2>
+    <form action="/login" method="POST" class="login-form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-input") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-input") }}
+        </div>
+        {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+        {% elif success_message %}
+        <p class="success-message">{{ success_message }}</p>
+        {% endif %}
+        {{ form.submit(class="btn-orange") }}
+        <div class="register-link">
+            Нет аккаунта? <a href="/register">Зарегистрироваться</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

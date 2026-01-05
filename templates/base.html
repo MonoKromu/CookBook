@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="site-title">
+                <p class="logo">Cook Book</p>
+            </div>
+            <nav class="nav-menu">
+                {% for link_name, link_url in [("Главная", "/"), ("Поиск", "/search"), ("Добавить рецепт", "/new_recipe")] %}
+                    <a href="{{ link_url }}" class="nav-link">{{ link_name }}</a>
+                {% endfor %}
+            </nav>
+            <nav class="auth-section">
+                {% if jwt %}
+                    <a href="/user/{{ jwt.get('sub') }}" class="nav-link user-link">{{ jwt.get("username") }}</a>
+                    <a href="/logout" class="nav-link logout-link">Выйти</a>
+                {% else %}
+                    <a href="/login" class="nav-link ">Войти</a>
+                    <a href="/register" class="nav-link ">Регистрация</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

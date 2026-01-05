@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/recipe_edit.css') }}">
+<div class="recipe-create">
+    <h1>Добавить рецепт</h1>
+
+    <form id="recipe-form" class="recipe-form" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="form-section">
+            <div class="photo-upload">
+                <label for="{{ form.main_image.id }}" class="photo-label">
+                    <div class="photo-preview" id="photo-preview">
+                        <span class="photo-placeholder">Нажмите, чтобы загрузить фото</span>
+                    </div>
+                </label>
+                {{ form.main_image(class="photo-input", style="display: none;") }}
+            </div>
+
+            <div class="form-fields">
+                <div class="form-group">
+                    <label for="{{ form.title.id }}" class="form-label">{{ form.title.label.text }}</label>
+                    {{ form.title(class="form-input", placeholder="Введите название рецепта") }}
+                    {% if form.title.errors %}
+                        <div class="error">{{ form.title.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.description.id }}" class="form-label">{{ form.description.label.text }}</label>
+                    {{ form.description(class="form-textarea", placeholder="Опишите ваш рецепт...", rows="6") }}
+                    {% if form.description.errors %}
+                        <div class="error">{{ form.description.errors[0] }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.tags.id }}" class="form-label">{{ form.tags.label.text }}</label>
+                    {{ form.tags(class="form-input", placeholder="Введите теги через запятую") }}
+                    {% if form.tags.errors %}
+                        <div class="error">{{ form.tags.errors[0] }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section ingredients-section">
+            <h3>Ингредиенты</h3>
+            <div class="ingredients-container" id="ingredients-container">
+                {% for ingredient_field in form.ingredients %}
+                <div class="ingredient-row" data-index="{{ loop.index0 }}">
+                    <div class="ingredient-field">
+                        {{ ingredient_field.form.name(class="form-input ingredient-name", placeholder="Название ингредиента") }}
+                        {% if ingredient_field.form.name.errors %}
+                            <div class="error">{{ ingredient_field.form.name.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="ingredient-field">
+                        {{ ingredient_field.form.unit(class="form-input ingredient-unit") }}
+                        {% if ingredient_field.form.unit.errors %}
+                            <div class="error">{{ ingredient_field.form.unit.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="ingredient-field">
+                        {{ ingredient_field.form.amount(class="form-input ingredient-amount", placeholder="Количество", step="0.1", min="0.1") }}
+                        {% if ingredient_field.form.amount.errors %}
+                            <div class="error">{{ ingredient_field.form.amount.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+
+                    <button type="button" class="btn-remove-ingredient" onclick="removeIngredient(this)">
+                        Удалить
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="button" class="btn-orange btn-add-ingredient" onclick="addIngredient()">
+                + Добавить ингредиент
+            </button>
+        </div>
+
+        <div class="form-section steps-section">
+            <h3>Шаги приготовления</h3>
+            <div class="steps-container" id="steps-container">
+                {% for recipe_part_field in form.recipe_parts %}
+                <div class="step-row" data-index="{{ loop.index0 }}">
+                    <div class="step-photo-upload">
+                        <div class="step-photo-preview" data-step-index="{{ loop.index0 }}">
+                            <span class="step-photo-placeholder">Нажмите, чтобы загрузить фото</span>
+                        </div>
+                        {{ recipe_part_field.form.step_image(
+                            class="step-photo-input",
+                            style="display: none;",
+                            data_step_index=loop.index0
+                        ) }}
+                    </div>
+
+                    <div class="step-content">
+                        <div class="step-field">
+                            <label class="form-label">Шаг {{ loop.index }}</label>
+                            {{ recipe_part_field.form.text(
+                                class="form-textarea step-description",
+                                placeholder="Опишите шаг приготовления...",
+                                rows="4"
+                            ) }}
+                            {% if recipe_part_field.form.text.errors %}
+                                <div class="error">{{ recipe_part_field.form.text.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <button type="button" class="btn-remove-step" onclick="removeStep(this)">
+                            Удалить шаг
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="button" class="btn-orange btn-add-step" onclick="addStep()">
+                + Добавить шаг
+            </button>
+        </div>
+
+        <div class="form-submit">
+            {{ form.submit(class="btn-orange btn-submit") }}
+        </div>
+    </form>
+</div>
+
+<!-- Шаблоны для динамического добавления -->
+<template id="ingredient-template">
+    <div class="ingredient-row" data-index="__index__">
+        <div class="ingredient-field">
+            <input type="text"
+                   name="ingredients-__index__-name"
+                   class="form-input ingredient-name"
+                   placeholder="Название ингредиента"
+                   required>
+        </div>
+        <div class="ingredient-field">
+            <select name="ingredients-__index__-unit" class="form-input ingredient-unit" required>
+                <option value="">Единица измерения</option>
+                {% for value, label in form.ingredients[0].form.unit.choices %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="ingredient-field">
+            <input type="number"
+                   name="ingredients-__index__-amount"
+                   class="form-input ingredient-amount"
+                   placeholder="Количество"
+                   step="0.1"
+                   min="0.1"
+                   required>
+        </div>
+        <button type="button" class="btn-remove-ingredient" onclick="removeIngredient(this)">
+            Удалить
+        </button>
+    </div>
+</template>
+
+<template id="step-template">
+    <div class="step-row" data-index="__index__">
+        <div class="step-photo-upload">
+            <div class="step-photo-preview" data-step-index="__index__">
+                <span class="step-photo-placeholder">Нажмите, чтобы загрузить фото</span>
+            </div>
+            <input type="file"
+                   name="recipe_parts-__index__-step_image"
+                   accept="image/*"
+                   class="step-photo-input"
+                   style="display: none;"
+                   data-step-index="__index__">
+        </div>
+        <div class="step-content">
+            <div class="step-field">
+                <label class="form-label">Шаг __step_number__</label>
+                <textarea name="recipe_parts-__index__-text"
+                          class="form-textarea step-description"
+                          placeholder="Опишите шаг приготовления..."
+                          rows="4"
+                          required></textarea>
+            </div>
+            <button type="button" class="btn-remove-step" onclick="removeStep(this)">
+                Удалить шаг
+            </button>
+        </div>
+    </div>
+</template>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработчик главного фото
+    const photoInput = document.querySelector('input[name="main_image"]');
+    const photoPreview = document.getElementById('photo-preview');
+    const placeholder = photoPreview.querySelector('.photo-placeholder');
+
+    photoPreview.addEventListener('click', function() {
+        photoInput.click();
+    });
+
+    photoInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                placeholder.style.display = 'none';
+                let img = photoPreview.querySelector('img');
+                if (!img) {
+                    img = document.createElement('img');
+                    photoPreview.appendChild(img);
+                }
+                img.src = e.target.result;
+                img.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Инициализация обработчиков для фото шагов
+    initializeStepPhotoHandlers();
+});
+
+let ingredientIndex = {{ form.ingredients.entries|length }};
+let stepIndex = {{ form.recipe_parts.entries|length }};
+
+function addIngredient() {
+    const container = document.getElementById('ingredients-container');
+    const template = document.getElementById('ingredient-template');
+    const newRow = template.content.cloneNode(true);
+
+    // Заменяем плейсхолдеры
+    const rowDiv = newRow.querySelector('.ingredient-row');
+    rowDiv.setAttribute('data-index', ingredientIndex);
+
+    // Обновляем имена полей
+    const inputs = newRow.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        input.name = input.name.replace('__index__', ingredientIndex);
+    });
+
+    container.appendChild(newRow);
+    ingredientIndex++;
+}
+
+function removeIngredient(button) {
+    const row = button.closest('.ingredient-row');
+    const container = document.getElementById('ingredients-container');
+    const rows = container.querySelectorAll('.ingredient-row');
+
+    if (rows.length > 1) {
+        row.remove();
+        // Переиндексация оставшихся элементов
+        reindexIngredients();
+    } else {
+        alert('Рецепт должен содержать хотя бы один ингредиент');
+    }
+}
+
+function reindexIngredients() {
+    const container = document.getElementById('ingredients-container');
+    const rows = container.querySelectorAll('.ingredient-row');
+    let maxIndex = 0;
+
+    rows.forEach((row, index) => {
+        row.setAttribute('data-index', index);
+
+        // Обновляем имена полей
+        const nameInput = row.querySelector('input[name*="name"]');
+        const unitSelect = row.querySelector('select[name*="unit"]');
+        const amountInput = row.querySelector('input[name*="amount"]');
+
+        if (nameInput) nameInput.name = `ingredients-${index}-name`;
+        if (unitSelect) unitSelect.name = `ingredients-${index}-unit`;
+        if (amountInput) amountInput.name = `ingredients-${index}-amount`;
+
+        maxIndex = index;
+    });
+
+    ingredientIndex = maxIndex + 1;
+}
+
+function addStep() {
+    const container = document.getElementById('steps-container');
+    const template = document.getElementById('step-template');
+    const newRow = template.content.cloneNode(true);
+
+    // Вычисляем номер шага
+    const currentSteps = container.querySelectorAll('.step-row').length;
+    const stepNumber = currentSteps + 1;
+
+    // Заменяем плейсхолдеры
+    const rowDiv = newRow.querySelector('.step-row');
+    rowDiv.setAttribute('data-index', stepIndex);
+
+    // Обновляем имена полей и label
+    const stepLabel = newRow.querySelector('.form-label');
+    stepLabel.textContent = `Шаг ${stepNumber}`;
+
+    const textarea = newRow.querySelector('textarea[name*="text"]');
+    const fileInput = newRow.querySelector('input[name*="step_image"]');
+    const photoPreview = newRow.querySelector('.step-photo-preview');
+
+    if (textarea) textarea.name = `recipe_parts-${stepIndex}-text`;
+    if (fileInput) {
+        fileInput.name = `recipe_parts-${stepIndex}-step_image`;
+        fileInput.setAttribute('data-step-index', stepIndex);
+    }
+    if (photoPreview) {
+        photoPreview.setAttribute('data-step-index', stepIndex);
+    }
+
+    container.appendChild(newRow);
+
+    // Добавляем обработчик для фото нового шага
+    const addedRow = container.lastElementChild;
+    setupStepPhotoHandler(addedRow);
+
+    stepIndex++;
+}
+
+function removeStep(button) {
+    const row = button.closest('.step-row');
+    const container = document.getElementById('steps-container');
+    const rows = container.querySelectorAll('.step-row');
+
+    if (rows.length > 1) {
+        row.remove();
+        // Переиндексация и обновление номеров шагов
+        reindexSteps();
+    } else {
+        alert('Рецепт должен содержать хотя бы один шаг');
+    }
+}
+
+function reindexSteps() {
+    const container = document.getElementById('steps-container');
+    const rows = container.querySelectorAll('.step-row');
+    let maxIndex = 0;
+
+    rows.forEach((row, index) => {
+        row.setAttribute('data-index', index);
+
+        // Обновляем номер шага в label
+        const stepLabel = row.querySelector('.form-label');
+        stepLabel.textContent = `Шаг ${index + 1}`;
+
+        // Обновляем имена полей
+        const textarea = row.querySelector('textarea[name*="text"]');
+        const fileInput = row.querySelector('input[name*="step_image"]');
+        const photoPreview = row.querySelector('.step-photo-preview');
+
+        if (textarea) textarea.name = `recipe_parts-${index}-text`;
+        if (fileInput) {
+            fileInput.name = `recipe_parts-${index}-step_image`;
+            fileInput.setAttribute('data-step-index', index);
+        }
+        if (photoPreview) {
+            photoPreview.setAttribute('data-step-index', index);
+        }
+
+        maxIndex = index;
+    });
+
+    stepIndex = maxIndex + 1;
+}
+
+function setupStepPhotoHandler(rowElement) {
+    const stepIndex = rowElement.getAttribute('data-index');
+    const stepPhotoInput = rowElement.querySelector('.step-photo-input');
+    const stepPhotoPreview = rowElement.querySelector('.step-photo-preview');
+    const placeholder = stepPhotoPreview.querySelector('.step-photo-placeholder');
+
+    stepPhotoPreview.addEventListener('click', function() {
+        stepPhotoInput.click();
+    });
+
+    stepPhotoInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                placeholder.style.display = 'none';
+                let img = stepPhotoPreview.querySelector('img');
+                if (!img) {
+                    img = document.createElement('img');
+                    stepPhotoPreview.appendChild(img);
+                }
+                img.src = e.target.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+function initializeStepPhotoHandlers() {
+    const stepRows = document.querySelectorAll('.step-row');
+    stepRows.forEach(row => {
+        setupStepPhotoHandler(row);
+    });
+}
+</script>
+{% endblock %}

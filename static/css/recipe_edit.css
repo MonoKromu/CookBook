@@ -1,0 +1,309 @@
+
+.recipe-create {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.recipe-form {
+    padding: 30px;
+}
+
+.form-section {
+    padding: 15px;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    background: white;
+    margin-bottom: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.ingredient-row {
+    display: flex;
+    column-gap: 6px;
+    align-items: center;
+    margin-top: 5px;
+    padding: 15px;
+    background-color: #fff8f0;
+    border-radius: 8px;
+    border: 1px solid #ffcc80;
+}
+
+.ingredient-field {
+    flex: 1;
+}
+
+.ingredient-name {
+    width: 100%;
+}
+
+.ingredient-unit {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ffcc80;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+    transition: border-color 0.3s;
+}
+
+.ingredient-unit:focus {
+    outline: none;
+    border-color: #ff9800;
+}
+
+.ingredient-amount {
+    width: 100%;
+}
+
+.btn-remove-ingredient {
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+.btn-remove-ingredient:hover {
+    background: #d84315;
+}
+
+.btn-add-ingredient {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+.photo-upload {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 300px;
+}
+
+.photo-label {
+    display: block;
+    cursor: pointer;
+}
+
+.photo-preview {
+    width: 100%;
+    height: 300px;
+    border: 3px dashed #ff9800;
+    border-radius: 10px;
+    display: flex;
+    align-vertical: center;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #fff8f0;
+    transition: border-color 0.3s;
+}
+
+.photo-preview:hover {
+    border-color: #ff5722;
+}
+
+.photo-placeholder {
+    color: #ff9800;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    padding: 20px;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.form-fields {
+    flex: 2;
+    min-width: 300px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #e65100;
+    font-size: 16px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ffcc80;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #ff9800;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ffcc80;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #ff9800;
+}
+
+.steps-container {
+    width: 100%;
+}
+
+.step-row {
+    display: flex;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ffcc80;
+    position: relative;
+}
+
+.step-photo-upload {
+    flex: 0 0 200px;
+}
+
+.step-photo-preview {
+    width: 200px;
+    height: 200px;
+    border: 2px dashed #ff9800;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #fff8f0;
+    cursor: pointer;
+}
+
+.step-photo-preview:hover {
+    border-color: #ff5722;
+}
+
+.step-photo-placeholder {
+    color: #ff9800;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+}
+
+.step-photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.step-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.step-field {
+    flex: 1;
+}
+
+.btn-remove-step {
+    align-self: flex-end;
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.btn-remove-step:hover {
+    background: #d84315;
+}
+
+.btn-add-step {
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .form-section {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .step-photo-preview {
+        height: 150px;
+    }
+
+    .step-row {
+        flex-direction: column;
+    }
+
+    .step-photo-upload {
+        flex: none;
+        width: 100%;
+    }
+
+    .step-photo-preview {
+        width: 100%;
+        height: 200px;
+    }
+
+    .btn-remove-step {
+        align-self: stretch;
+        width: 100%;
+    }
+    
+    .ingredient-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .ingredient-field {
+        width: 100%;
+    }
+    
+    .btn-remove-ingredient {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .photo-upload, .form-fields {
+        min-width: 100%;
+    }
+    
+    .photo-preview {
+        height: 250px;
+    }
+    
+    .recipe-form {
+        padding: 20px;
+    }
+}
