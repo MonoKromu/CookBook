@@ -16,14 +16,15 @@ class RegisterForm(FlaskForm):
         validators=[
             DataRequired(message="Это поле обязательно для заполнения"),
             Length(min=7, max=30, message="Пароль должен содержать от 7 до 30 символов")
-        ]
+        ],
+        render_kw={"autocomplete": "new-password"}
     )
     password_again = PasswordField(
         "Повторите пароль",
         validators=[
-            DataRequired(message="Это поле обязательно для заполнения"),
             EqualTo('password', message="Пароли должны совпадать")
-        ]
+        ],
+        render_kw={"autocomplete": "new-password"}
     )
     about = TextAreaField(
         "Информация о вас",

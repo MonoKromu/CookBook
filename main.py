@@ -39,6 +39,9 @@ def expired_token_callback(jwt_header, jwt_payload):
         set_access_cookies(re, response.get("access_token"))
         return re
 
+@jwt.unauthorized_loader
+def handle_unauthorized_error(callback):
+    return redirect("/login")
 
 @app.route("/")
 @app.route("/index")
@@ -92,11 +95,12 @@ def login():
     return render_template("login.html", title=title, form=form, jwt=get_jwt())
 
 @app.route("/new_recipe", methods=["GET", "POST"])
-@jwt_required(optional=True)
+@jwt_required()
 def new_recipe():
     title = "Новый рецепт"
     form = RecipeForm()
     if request.form:
+        print(dict(request.form))
         return dict(request.form)
     return render_template("recipe_edit.html", title=title, jwt=get_jwt(), form=form)
 

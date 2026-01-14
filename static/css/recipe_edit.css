@@ -19,6 +19,20 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+.ingredients-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.steps-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+}
+
 .ingredient-row {
     display: flex;
     column-gap: 6px;
@@ -75,7 +89,6 @@
 
 .btn-add-ingredient {
     padding: 12px 24px;
-    font-size: 16px;
     border-radius: 8px;
 }
 

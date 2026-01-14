@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, FloatField, SelectField, FieldList, FormField, SubmitField
+from wtforms.fields.numeric import IntegerRangeField, IntegerField
 from wtforms.validators import DataRequired, Length, Optional, NumberRange
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from enum import Enum
@@ -20,16 +21,18 @@ class Unit(Enum):
 
 class IngredientForm(FlaskForm):
     name = StringField(
-        'Название ингредиента',
+        'Название',
         validators=[DataRequired(message="Введите название ингредиента"),
                     Length(max=100)]
     )
-    amount = FloatField(
+    amount = IntegerField(
         'Количество',
         validators=[
             DataRequired(message="Введите количество"),
-            NumberRange(min=0.01, message="Количество должно быть больше 0")
-        ]
+            NumberRange(min=1, message="Количество должно быть больше 0")
+        ],
+        default=100,
+        render_kw={"type": "number", "step": "1"}
     )
     unit = SelectField(
         'Единица измерения',

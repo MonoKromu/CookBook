@@ -46,12 +46,12 @@
         </div>
 
         <div class="form-section ingredients-section">
-            <h3>Ингредиенты</h3>
+            <h2>Ингридиенты</h2>
             <div class="ingredients-container" id="ingredients-container">
                 {% for ingredient_field in form.ingredients %}
                 <div class="ingredient-row" data-index="{{ loop.index0 }}">
                     <div class="ingredient-field">
-                        {{ ingredient_field.form.name(class="form-input ingredient-name", placeholder="Название ингредиента") }}
+                        {{ ingredient_field.form.name(class="form-input ingredient-name", placeholder="Название") }}
                         {% if ingredient_field.form.name.errors %}
                             <div class="error">{{ ingredient_field.form.name.errors[0] }}</div>
                         {% endif %}
@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="ingredient-field">
-                        {{ ingredient_field.form.amount(class="form-input ingredient-amount", placeholder="Количество", step="0.1", min="0.1") }}
+                        {{ ingredient_field.form.amount(class="form-input ingredient-amount", placeholder="Количество") }}
                         {% if ingredient_field.form.amount.errors %}
                             <div class="error">{{ ingredient_field.form.amount.errors[0] }}</div>
                         {% endif %}
@@ -84,7 +84,7 @@
         </div>
 
         <div class="form-section steps-section">
-            <h3>Шаги приготовления</h3>
+            <h2>Шаги приготовления</h2>
             <div class="steps-container" id="steps-container">
                 {% for recipe_part_field in form.recipe_parts %}
                 <div class="step-row" data-index="{{ loop.index0 }}">
@@ -131,19 +131,17 @@
     </form>
 </div>
 
-<!-- Шаблоны для динамического добавления -->
 <template id="ingredient-template">
     <div class="ingredient-row" data-index="__index__">
         <div class="ingredient-field">
             <input type="text"
                    name="ingredients-__index__-name"
                    class="form-input ingredient-name"
-                   placeholder="Название ингредиента"
+                   placeholder="Название"
                    required>
         </div>
         <div class="ingredient-field">
             <select name="ingredients-__index__-unit" class="form-input ingredient-unit" required>
-                <option value="">Единица измерения</option>
                 {% for value, label in form.ingredients[0].form.unit.choices %}
                 <option value="{{ value }}">{{ label }}</option>
                 {% endfor %}
@@ -154,8 +152,9 @@
                    name="ingredients-__index__-amount"
                    class="form-input ingredient-amount"
                    placeholder="Количество"
-                   step="0.1"
-                   min="0.1"
+                   step="1"
+                   min="1"
+                   value="100"
                    required>
         </div>
         <button type="button" class="btn-remove-ingredient" onclick="removeIngredient(this)">
