@@ -31,4 +31,7 @@
 Документация по api по адресу /docs.
 
 ## Демонстрация работы
-![Страница с рецептом](https://github.com/MonoKromu/CookBook/raw/master/demo/1.png)
+![Страница с рецептом](https://raw.githubusercontent.com/monokromu/cookbook/master/demo/1.png)
+![Страница создания рецепта](https://raw.githubusercontent.com/monokromu/cookbook/master/demo/2.png)
+![Страница поиска](https://raw.githubusercontent.com/monokromu/cookbook/master/demo/3.png)
+![Регистрация пользователя](https://raw.githubusercontent.com/monokromu/cookbook/master/demo/4.png)
