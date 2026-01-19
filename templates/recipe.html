@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/recipe.css') }}">
+<div class="recipe-detail-container">
+    <div class="recipe-header">
+        <div class="recipe-header-top">
+            <h1 class="recipe-title">{{ recipe.get("title") }}</h1>
+            {% if jwt and jwt.get("username") == recipe.get("user").get("username") %}
+            <a href="/recipes/{{ recipe.get('id') }}/delete" class="delete-button">Удалить рецепт</a>
+            {% endif %}
+        </div>
+        <div class="recipe-meta">
+            <a href="/users/{{ recipe.get('user').get('id') }}" class="author-link">
+                {{ recipe.get("user").get("username") }}
+            </a>
+            <span class="date">{{ recipe.get("created_date") }}</span>
+            {% if recipe.get("tags") %}
+            <span class="tags">Теги: {{ recipe.get("tags") }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if recipe.get("image") %}
+    <div class="main-image-section">
+        <img src="{{ url_for('static', filename=(recipe.get('image').split('static/')[1])) }}"
+             alt="{{ recipe.get('title') }}"
+             class="main-image">
+    </div>
+    {% endif %}
+
+    <div class="two-columns-section">
+        {% if recipe.get("description") %}
+        <div class="section-card">
+            <h2 class="section-title">Описание</h2>
+            <div class="description-text">
+                {{ recipe.get("description") }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if recipe.get("ingredients") %}
+        <div class="section-card">
+            <h2 class="section-title">Ингредиенты</h2>
+            <div class="ingredients-list">
+                {% for ingredient in recipe.get("ingredients") %}
+                <div class="ingredient-item">
+                    <span class="ingredient-name">{{ ingredient.get("name") }}</span>
+                    <span class="ingredient-amount">
+                        {{ ingredient.get("amount") }}
+                        {% if ingredient.get("unit") %}
+                        {{ ingredient.get("unit") }}
+                        {% endif %}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if recipe.get("recipe_parts") %}
+    <div class="section-card">
+        <h2 class="section-title">Приготовление</h2>
+        <div class="recipe-steps">
+            {% for part in recipe.get("recipe_parts") %}
+            <div class="recipe-step">
+                {% if part.get("image") %}
+                <div class="step-image">
+                    <img src="{{ url_for('static', filename=(part.get('image').split('static/')[1])) }}"
+                         alt="Шаг {{ loop.index }}">
+                </div>
+                {% endif %}
+                <div class="step-text">
+                    <h3 class="step-title">Шаг {{ loop.index }}</h3>
+                    <div class="step-content">{{ part.get("text") }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

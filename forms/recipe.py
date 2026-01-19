@@ -1,13 +1,11 @@
-from flask import Flask, request, render_template
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, FloatField, SelectField, FieldList, FormField, SubmitField
-from wtforms.fields.numeric import IntegerRangeField, IntegerField
-from wtforms.validators import DataRequired, Length, Optional, NumberRange
-from flask_wtf.file import FileField, FileAllowed, FileRequired
 from enum import Enum
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key'
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from wtforms import StringField, TextAreaField, SelectField, FieldList, FormField, SubmitField, Form
+from wtforms.fields.numeric import IntegerField
+from wtforms.validators import DataRequired, Length, Optional, NumberRange
+
 
 class Unit(Enum):
     GRAM = "г"
@@ -19,7 +17,8 @@ class Unit(Enum):
     TEASPOON = "ч. л."
     CUP = "стакан"
 
-class IngredientForm(FlaskForm):
+
+class IngredientForm(Form):
     name = StringField(
         'Название',
         validators=[DataRequired(message="Введите название ингредиента"),
@@ -40,7 +39,11 @@ class IngredientForm(FlaskForm):
         validators=[DataRequired(message="Выберите единицу измерения")]
     )
 
-class RecipePartForm(FlaskForm):
+    class Meta:
+        csrf = False
+
+
+class RecipePartForm(Form):
     text = TextAreaField(
         'Описание шага',
         validators=[
@@ -55,6 +58,10 @@ class RecipePartForm(FlaskForm):
             FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Только изображения!')
         ]
     )
+
+    class Meta:
+        csrf = False
+
 
 class RecipeForm(FlaskForm):
     title = StringField(
@@ -93,7 +100,7 @@ class RecipeForm(FlaskForm):
     ingredients = FieldList(
         FormField(IngredientForm),
         min_entries=1,
-        label='Ингредиенты'
+        label='Ингредиенты',
     )
 
     recipe_parts = FieldList(
@@ -103,3 +110,16 @@ class RecipeForm(FlaskForm):
     )
 
     submit = SubmitField('Сохранить рецепт')
+
+    def __init__(self, *args, edit_mode=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        if edit_mode:
+            self.main_image.validators = [
+                FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Только изображения!'),
+                Optional()
+            ]
+        else:
+            self.main_image.validators = [
+                DataRequired(message="Изображение обязательно"),
+                FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Только изображения!')
+            ]

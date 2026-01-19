@@ -1,0 +1,53 @@
+.profile-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.profile-name {
+    margin: 0;
+    color: #2d3748;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.profile-info-section {
+    margin-bottom: 25px;
+}
+
+.profile-subtitle {
+    margin: 0 0 15px 0;
+    color: #4a5568;
+    font-size: 1.3em;
+    font-weight: 500;
+}
+
+.profile-info-content {
+    color: #4a5568;
+    line-height: 1.6;
+    font-size: 1.05em;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+    background-color: #f7fafc;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #4299e1;
+}
+
+.profile-recipes-header {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+}

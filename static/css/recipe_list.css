@@ -1,0 +1,144 @@
+.recipe-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: flex;
+    height: 200px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.recipe-container img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    flex-shrink: 0;
+}
+
+.recipe-container .text {
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.recipe-container .title {
+    margin: 0 0 0px 0;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.recipe-container .content {
+    flex-grow: 1;
+    color: #666;
+    line-height: 1.2;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+}
+
+.recipe-container hr {
+    border: none;
+    border-top: 1px solid #eee;
+    width: 100%;
+}
+
+.recipe-container .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #888;
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.recipe-container a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.recipe-container a:hover {
+    text-decoration: underline;
+}
+
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px auto;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+.page-numbers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    max-width: 1200px;
+}
+
+.page-btn {
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: 1px solid #dee2e6;
+}
+
+.page-btn:hover {
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+.page-info {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.page-num {
+    display: inline-block;
+    padding: 8px 12px;
+    min-width: 40px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s;
+}
+
+.page-num:hover {
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+.page-num.current {
+    background-color: #e65100;
+    color: white;
+    border-color: #e65100;
+}

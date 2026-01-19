@@ -223,6 +223,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Инициализация обработчиков для фото шагов
     initializeStepPhotoHandlers();
+
+    displayStoredImagePreview(photoInput, photoPreview);
+    document.querySelectorAll('.step-photo-input').forEach(input => {
+        const stepIndex = input.getAttribute('data-step-index');
+        const preview = document.querySelector(`.step-photo-preview[data-step-index="${stepIndex}"]`);
+        if (preview) {
+            displayStoredImagePreview(input, preview);
+        }
+    });
 });
 
 let ingredientIndex = {{ form.ingredients.entries|length }};
@@ -403,6 +412,25 @@ function initializeStepPhotoHandlers() {
     stepRows.forEach(row => {
         setupStepPhotoHandler(row);
     });
+}
+
+function displayStoredImagePreview(input, previewElement) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const placeholder = previewElement.querySelector('.photo-placeholder, .step-photo-placeholder');
+            placeholder.style.display = 'none';
+
+            let img = previewElement.querySelector('img');
+            if (!img) {
+                img = document.createElement('img');
+                previewElement.appendChild(img);
+            }
+            img.src = e.target.result;
+            img.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 </script>
 {% endblock %}

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -20,7 +21,7 @@
             </nav>
             <nav class="auth-section">
                 {% if jwt %}
-                    <a href="/user/{{ jwt.get('sub') }}" class="nav-link user-link">{{ jwt.get("username") }}</a>
+                    <a href="/users/{{ jwt.get('sub') }}" class="nav-link user-link">{{ jwt.get("username") }}</a>
                     <a href="/logout" class="nav-link logout-link">Выйти</a>
                 {% else %}
                     <a href="/login" class="nav-link ">Войти</a>

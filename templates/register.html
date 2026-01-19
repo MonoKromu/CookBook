@@ -10,7 +10,7 @@
             {% if field.name != 'submit' %}
             <div class="form-group">
                 {{ field.label(class="form-label") }}
-                {{ field(class="form-input", value=field.data) }}
+                {{ field(class="form-input") }}
                 {% for error in field.errors %}
                     <span class="error-message">{{ error }}</span>
                 {% endfor %}

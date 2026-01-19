@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% block profile %}{% endblock %}
+{% block search %}{% endblock %}
+{% for recipe in recipes %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/recipe_list.css') }}">
+<div class="recipe-container">
+    <img src="{{ url_for('static', filename=(recipe.get('image').split('static/')[1])) }}">
+    <div class="text">
+        <h2 class="title"><a href="/recipes/{{ recipe.get('id') }}">{{ recipe.get("title") }}</a></h2>
+        <div class="content">{{ recipe.get("description") }}</div>
+        <hr>
+        <div class="footer">
+            <div>
+                <a href="/users/{{ recipe.get('user').get('id') }}">
+                {{ recipe.get("user").get("username") }}
+                </a>
+                {% if recipe.get("tags") %}, теги: {{ recipe.get("tags") }}{% endif %}
+            </div>
+            <div>{{ recipe.get("created_date") }}</div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% if pages > 1 %}
+<div class="pagination">
+    {% if page > 1 %}
+        <a href="?{% for key, value in request.args.items() %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page - 1 }}" class="page-btn prev-btn">‹ Предыдущая</a>
+    {% endif %}
+    <span class="page-info">Страница {{ page }} из {{ pages }}</span>
+    {% if page < pages %}
+        <a href="?{% for key, value in request.args.items() %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page + 1 }}" class="page-btn next-btn">Следующая ›</a>
+    {% endif %}
+</div>
+
+<div class="page-numbers">
+    {% if page > 2 %}
+        <a href="?{% for key, value in request.args.items() %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1" class="page-num">1</a>
+        {% if page > 3 %}...{% endif %}
+    {% endif %}
+    {% if page > 1 %}
+        <a href="?{% for key, value in request.args.items() %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page - 1 }}" class="page-num">{{ page - 1 }}</a>
+    {% endif %}
+    <span class="page-num current">{{ page }}</span>
+    {% if page < pages %}
+        <a href="?{% for key, value in request.args.items() %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page + 1 }}" class="page-num">{{ page + 1 }}</a>
+    {% endif %}
+    {% if page < pages - 1 %}
+        {% if page < pages - 2 %}...{% endif %}
+        <a href="?{% for key, value in request.args.items() %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ pages }}" class="page-num">{{ pages }}</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

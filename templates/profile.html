@@ -1,0 +1,31 @@
+{% extends "recipe_list.html" %}
+
+{% block profile %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+<div class="profile-container">
+    <div class="profile-header">
+        <h1 class="profile-name">Пользователь: {{ user.get("username") }}</h1>
+    </div>
+    
+    <div class="profile-info-section">
+        <h2 class="profile-subtitle">Обо мне:</h2>
+        <div class="profile-info-content">
+            {% if user.get("about") and user.get("about")|trim %}
+                {{ user.get("about") }}
+            {% else %}
+                Пользователь ничего о себе не написал
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="profile-recipes-header">
+        <h2 class="profile-subtitle">
+            {% if recipes|length > 0 %}
+                Мои рецепты:
+            {% else %}
+                Пользователь пока не выкладывал рецептов
+            {% endif %}
+        </h2>
+    </div>
+</div>
+{% endblock %}

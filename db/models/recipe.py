@@ -44,7 +44,9 @@ class Recipe(SqlAlchemyBase, SerializerMixin):
     tags = Column(String(100), nullable=True)
     image = Column(String, nullable=True)
     created_date = Column(DateTime, default=datetime.datetime.now)
-    user_id = Column(Integer, ForeignKey("user.id"))
+    user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+
+    # user = relationship("User", back_populates="recipes")
 
     ingredients = relationship("Ingredient", backref="recipe", cascade="all, delete-orphan")
     recipe_parts = relationship("RecipePart", backref="recipe", cascade="all, delete-orphan")

@@ -1,0 +1,31 @@
+{% extends "recipe_list.html" %}
+
+{% block search %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+<div class="search-container">
+    <form method="GET" action="{{ request.path }}" class="search-form">
+        <input type="hidden" name="page" value="1">
+
+        <div class="search-row">
+            <label for="title">Поиск по названию:</label>
+            <input type="text"
+                   id="title"
+                   name="title"
+                   value="{{ request.args.get('title', '') }}"
+                   placeholder="Введите название рецепта">
+        </div>
+
+        <div class="search-row">
+            <div class="tags-search">
+                <label for="tags">Поиск по тегам:</label>
+                <input type="text"
+                       id="tags"
+                       name="tags"
+                       value="{{ request.args.get('tags', '') }}"
+                       placeholder="Введите теги через запятую">
+            </div>
+            <button type="submit" class="search-btn">Найти</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
