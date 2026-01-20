@@ -42,7 +42,7 @@ def login():
     password = data.get('password')
     user = db.get_user_by_username(username)
     if db.check_user_password(username, password):
-        additional_claims = {"username": username, "admin": user.get("admin")}
+        additional_claims = {"username": username, "admin": int(user.get("admin"))}
         access_token = create_access_token(identity=str(user.get("id")), additional_claims=additional_claims,
                                            fresh=True)
         refresh_token = create_refresh_token(identity=str(user.get("id")), additional_claims=additional_claims)
@@ -188,7 +188,7 @@ def delete_recipe(recipe_id):
     recipe = db.get_recipe_by_id(recipe_id)
     if not recipe:
         return jsonify({"error": "404 Not Found"})
-    elif int(get_jwt_identity()) != recipe.get("user").get("id"):
+    elif int(get_jwt_identity()) != recipe.get("user").get("id") and not int(get_jwt().get("admin")):
         return jsonify({"error": "403 Forbidden"})
     else:
         db.delete_recipe(recipe_id)
@@ -226,6 +226,8 @@ def convert_to_image(b64text):
         img = Image.open(BytesIO(image_data))
         img.verify()
         img = Image.open(BytesIO(image_data))
+        if img.mode == 'RGBA':
+            img = img.convert('RGB')
         return img
     except Exception as _:
         raise Exception("Invalid Image File")

@@ -17,7 +17,7 @@ from swagger import swagger_ui_blueprint, SWAGGER_URL
 db = DatabaseOperations("db.sqlite")
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'my_secret_key'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'my-secret-key')
 app.config['UPLOAD_FOLDER'] = 'static/uploads/'
 
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'dev-secret-key')

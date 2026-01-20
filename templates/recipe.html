@@ -6,7 +6,7 @@
     <div class="recipe-header">
         <div class="recipe-header-top">
             <h1 class="recipe-title">{{ recipe.get("title") }}</h1>
-            {% if jwt and jwt.get("username") == recipe.get("user").get("username") %}
+            {% if jwt and (jwt.get("username") == recipe.get("user").get("username") or jwt.get("admin")) %}
             <a href="/recipes/{{ recipe.get('id') }}/delete" class="delete-button">Удалить рецепт</a>
             {% endif %}
         </div>
